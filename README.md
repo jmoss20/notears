@@ -16,7 +16,7 @@ networkx
 See `example_usage.ipynb` for a simple Jupyter notebook demonstrating usage.
 
 In general, using this package looks like:
-```
+```python 
 import notears
 
 output_dict = notears.run(notears.notears_standard, data, notears.loss.least_squares_loss, notears.loss.least_squares_loss_grad)
@@ -25,11 +25,13 @@ thresholded_output = notears.utils.threshold_output(output_dict['W'])
 
 ## Parameters
 ### notears.run
-`notears.run(variant, data, loss, loss_grad, c=0.25, r=10.0, e=1e-8, rnd_W_init=False, output_all_progress=False, verbose=False)`
+```python
+notears.run(variant, data, loss, loss_grad, c=0.25, r=10.0, e=1e-8, rnd_W_init=False, output_all_progress=False, verbose=False)
+```
 * `variant`: Which implementation of NOTEARS to use (at this time, only `notears.notears_standard` is implemented)
 * `data`: An `n x d` numpy array, containing `n` samples (rows) of data from `d` variables (columns)
-* `loss`: Function to use as loss function, can either pass `notears.loss.least_squares_loss` for least squares loss, or define a custom loss function (see `notears/loss.py` for reference implementations.
-* `loss_grad`: Function returning the gradient of the function specified as `loss`, with respect to the adjacency matrix $W$.
+* `loss`: Function to use as loss function, can either pass `notears.loss.least_squares_loss` for least squares loss, `notears.loss.least_squares_loss_cov` for expectation of least squares loss (recommended when using a large number of samples), or define a custom loss function (see `notears/loss.py` for reference implementations).
+* `loss_grad`: Function returning the gradient of the function specified as `loss`, with respect to the adjacency matrix `W`.  (e.g. `notears.loss.least_squares_loss_grad` or `notears.loss.least_squares_loss_cov_grad`)
 * `c`: minimum rate of progress `c \in (0,1)` (see paper)
 * `r`: penalty growth rate `r > 1` (see paper)
 * `e`: acyclicity loss stopping criteria `\epsilon > 0` (see paper)
